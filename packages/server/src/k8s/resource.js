@@ -66,9 +66,10 @@ const subscribeToCluster = async () => {
       stopAll(apiObj.metadata.name)
     },
     (err) => {
-      if (err) {
+      if (err && err.code !== 'ECONNRESET') {
         throw err
       }
+      log.error(err, 'error watching challenges, retrying...')
       subscribeToCluster() // TODO: is this proper usage?
     }
   )
